@@ -21,7 +21,7 @@
   <link rel="stylesheet" href="bower_components/chartist/dist/chartist.css">
   <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.min.css">
   <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.print.css" media="print">
-  <link rel="stylesheet" href="dist/css/animate.css" media="print">
+  <link rel="stylesheet" href="dist/css/animate.css">
   <style>
     .ct-series-a .ct-bar {
         /* Colour of your bars */
@@ -48,14 +48,28 @@
               font-size: 175%;
           }
           .dashboard-logo {
-              height: 75px;
-              text-align: center;
+              height: 150px;
           }
+    }
+
+    @media (max-width: 500px) {
+    /* CSS that should be displayed if width is equal to or less than 800px goes here */
+          .ct-series-a .ct-bar {
+              stroke-width: 0.5em;
+          }
+          .ct-label {
+              font-size: 0.60rem;
+          }
+    }
+
+    @media (min-width: 501px){
+        .ct-label {
+            font-size: 1rem;
+        }
     }
 
     .ct-label {
         color: #58585a;
-        font-size: 1rem;
     }
     .ct-chart {
         padding: 10px 10px 10px 10px;
@@ -171,9 +185,9 @@
   <!-- Content Wrapper. Contains page content -->
   <div id="main" role="main" class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1 class="animated infinite bounce">
-        <span class="dashboard-title">Brokerage Dashboard</span>
+    <section class="content-header" style="text-align:center;">
+      <h1>
+        <span class="dashboard-title"><span><img src="dist/img/concord_logo.png" class="dashboard-logo animated infinite pulse" height="40px"></span></span>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -235,10 +249,7 @@
                                 offset: 70
                                 },
                                 axisX: {
-                                onlyInteger: true,
-                                labelInterpolationFnc: function(value, index) {
-                                        return value % 5 === 0 ? value : null;
-                                }
+                                onlyInteger: true
                                 // ticks: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100]
                                 }} ).on('draw', function(data) {
                                   if(data.type === 'bar') {
@@ -274,6 +285,15 @@
                                                 style: "fill: #ffffff; font-size: 125%;"
                                               });
                                           }
+                                          else if(screen.width <= 500){
+                                              barVerticalCenter = data.y1+2.5;
+                                              label.attr({
+                                                x: barHorizontalCenter,
+                                                y: barVerticalCenter,
+                                                'text-anchor': 'end',
+                                                style: "fill: #ffffff; font-size: 50%;"
+                                              });
+                                          }
                                           else {
                                           label.attr({
                                             x: barHorizontalCenter,
@@ -303,14 +323,17 @@
                                   'stop-color': 'hsla(33, 100%, 50%, 1)'
                                 });
                             });
+                            chart.on('created', function(context) {
+                              console.log(context.axisX.bounds.high);
+                            });
                         }
                         Tabletop.init( { key: public_spreadsheet_url, callback: showInfo, simpleSheet: true } )
                     }
 
-                    // Re-populate the chart every 15 seconds
-                    // window.setInterval(function(){
-                    //     init();
-                    // }, 15000);
+                    //Re-populate the chart every 15 seconds
+                    window.setInterval(function(){
+                        init();
+                    }, 600000);
                     </script>
                   </div>
                   <!-- ./box-body -->
