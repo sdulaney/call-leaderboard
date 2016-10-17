@@ -27,7 +27,7 @@
         /* Colour of your bars */
         /*stroke:  #e76120;*/
         stroke: url(#gradient);
-        stroke-width: 1.5em;
+        stroke-width: 1em;
     }
 
     @media (min-width: 3000px) {
@@ -39,7 +39,7 @@
               font-size: 75%;
           }
           .ct-label {
-              font-size: 2rem;
+              font-size: 3rem;
           }
           .box-header .box-title {
               font-size: 250%;
@@ -328,6 +328,8 @@
                             });
                         }
                         Tabletop.init( { key: public_spreadsheet_url, callback: showInfo, simpleSheet: true } )
+                        console.log("Repopulating calendar...");
+                        $('#calendar').fullCalendar('refetchEventSources', { googleCalendarId:'concordpropertybase@gmail.com' });
                     }
 
                     //Re-populate the chart every 15 seconds
@@ -451,7 +453,7 @@
             var d = date.getDate(),
                 m = date.getMonth(),
                 y = date.getFullYear();
-        $('#calendar').fullCalendar({
+        var calendar = $('#calendar').fullCalendar({
             googleCalendarApiKey: 'AIzaSyD68k6jqGtTojbTmJpBFV13co6w8MlXBsU',
             header: {
                     left: 'prev,next today',
